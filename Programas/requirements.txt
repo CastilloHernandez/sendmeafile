@@ -1,0 +1,2 @@
+sendmeafile.py
+smtplib>=2.6

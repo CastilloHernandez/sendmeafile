@@ -210,13 +210,17 @@ while enviado == 0:
 	if origenok == 0:
 		rutaActual=''
 	if os.path.isfile(rutaActual):
-		enviado=1
 		print 'Enviando '+ str(idActual) +' - '+ rutaActual
 		for addr in opt.d:
 			print 'Enviando a '+ addr
-			sendbymail(rutaActual, name, addr)
-		cursor.execute('UPDATE files SET lastopen=? WHERE id=?', (time.time(), idActual))
-		db.commit()
+			try:
+				sendbymail(rutaActual, name, addr)
+				enviado=1
+			except:
+				print 'error al enviar' + rutaActual
+		if enviado == 1:
+			cursor.execute('UPDATE files SET lastopen=? WHERE id=?', (time.time(), idActual))
+			db.commit()
 	else:
 		if len(rutaActual):
 			print 'Archivo perdido '+ rutaActual
